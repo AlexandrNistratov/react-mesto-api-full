@@ -34,6 +34,13 @@ router.patch('/users/me/avatar',celebrate({
   }),
 }),auth, setAvatar);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+
 // Регистрация
 router.post('/signup',celebrate({
   body: Joi.object().keys({
