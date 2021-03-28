@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { celebrate, Joi } = require('celebrate');
 
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
@@ -8,7 +9,7 @@ const notFoundRouter = require('./routes/notFound');
 
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
+const { createProfile, login } = require('./controllers/users');
 
 const app = express();
 const PORT = 3000;
@@ -22,9 +23,30 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   autoIndex: true
 });
 
+app.use(bodyParser.json());
 app.use(requestLogger);
 
-app.use(bodyParser.json());
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+// Регистрация
+app.post('/signup',celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), createProfile);
+
+// Авторизация
+app.post('/signin',celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 
 app.use('/', userRouter);
 

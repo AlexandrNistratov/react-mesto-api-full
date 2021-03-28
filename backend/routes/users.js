@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-  getUsers, getProfile, setProfile, setAvatar, createProfile, login, getMeProfile
+  getUsers, getProfile, setProfile, setAvatar, getMeProfile
 } = require('../controllers/users');
 
 const auth = require('../middlewares/auth');
@@ -34,26 +34,4 @@ router.patch('/users/me/avatar',celebrate({
   }),
 }),auth, setAvatar);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
-
-// Регистрация
-router.post('/signup',celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-}), createProfile);
-
-// Авторизация
-router.post('/signin',celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-}), login);
 module.exports = router;
