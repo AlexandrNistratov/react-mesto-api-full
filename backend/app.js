@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi } = require('celebrate');
+const cors = require('cors');
 
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
@@ -11,10 +12,19 @@ const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { createProfile, login } = require('./controllers/users');
 
-const app = express();
-const PORT = 3000;
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'https://api.domainname.students.nomoredomains.club',
+    'https://AlexandrNistratov.github.io',
+  ],
+  credentials: true // эта опция позволяет устанавливать куки
+};
 
-// JWT_SECRET=eb28135ebcfc17578f96d4d65b6c7871f2c803be4180c165061d5c2db621c51b;
+const app = express();
+app.use('*', cors(options));
+
+const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,

@@ -1,3 +1,5 @@
+import { base_url } from './utils'
+
 class Api {
   constructor(config) {
     this._url = config.url;
@@ -5,9 +7,10 @@ class Api {
   }
 
   getUserInfo () {
-    return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me', {
+    return fetch(`${this._url}/users/me`, {
       method: 'GET',
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include'
     }).then((res) => {
       if (res.ok) {
         return res.json();
@@ -18,9 +21,10 @@ class Api {
   }
 
   addUserInfo (data) {
-    return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me', {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -37,7 +41,8 @@ class Api {
   getAllCards() {
     return fetch(this._url,{
       method: 'GET',
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     }).then((res) => {
       if (res.ok) {
         return res.json();
@@ -51,6 +56,7 @@ class Api {
     return fetch(this._url,{
       method: 'POST',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -65,9 +71,10 @@ class Api {
   }
 
   deleteCards(id) {
-    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/${id}`,{
+    return fetch(`${this._url}/cards/${id}`,{
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include'
       }).then((res) => {
         if (res.ok) {
           return res.json();
@@ -78,9 +85,10 @@ class Api {
   }
 
   likeCard(likeId) {
-    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/likes/${likeId}`, {
+    return fetch(`${this._url}/cards/likes/${likeId}`, {
       method: 'PUT',
       headers: this._headers,
+      credentials: 'include'
     }).then((res) => {
       if(res.ok) {
         return res.json();
@@ -91,9 +99,10 @@ class Api {
   }
 
   dislikeCard(likeId) {
-    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/likes/${likeId}`, {
+    return fetch(`${this._url}/cards/likes/${likeId}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include'
     }).then((res) => {
       if(res.ok) {
         return res.json();
@@ -104,9 +113,10 @@ class Api {
   }
 
   addUserAvatar (data) {
-    return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me/avatar ', {
+    return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         avatar: data.avatar
       })
@@ -121,9 +131,9 @@ class Api {
 }
 
 export  const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-18/cards',
+  url: base_url,
   headers: {
-    authorization: 'e2315ec0-9d36-47b6-91be-ca15417afdd8',
+    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
     'content-type': 'application/json'
   }
 });

@@ -1,12 +1,13 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+import { base_url } from './utils';
 
 export const register = (email, password) => {
-    return fetch(`${BASE_URL}/signup`, {
+    return fetch(`${base_url}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             "Content-Type": "application/json"
         },
+        credentials: 'include',
         body: JSON.stringify({email, password})
     })
         .then((res) => {
@@ -19,13 +20,14 @@ export const register = (email, password) => {
 }
 
 export const authorize = (email, password) => {
-    return fetch(`${BASE_URL}/signin`, {
+    return fetch(`${base_url}/signin`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, password})
+        body: JSON.stringify({email, password}),
+        credentials: 'include'
     })
         .then(checkResponse)
         .then((data) => {
@@ -37,8 +39,9 @@ export const authorize = (email, password) => {
 };
 
 export const getContent = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
+    return fetch(`${base_url}/users/me`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

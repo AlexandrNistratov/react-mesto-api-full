@@ -20,7 +20,6 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import AddPlacePopup from './AddPlacePopup';
 import ProtectedRoute from './ProtectedRoute';
 
-
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -108,6 +107,7 @@ function App() {
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
         const isLiked = card.likes.some(i => i._id === currentUser._id);
+        console.log(card.likes)
 
         isLiked ? (
             //Отправляем запрос для удаления лайка
