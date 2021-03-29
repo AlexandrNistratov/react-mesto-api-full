@@ -137,3 +137,4 @@ export  const api = new Api({
     'content-type': 'application/json'
   }
 });
+console.log( base_url)
