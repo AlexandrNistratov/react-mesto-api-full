@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/backend" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/backend/express-mesto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/react-mesto-auth" vcs="Git" />
   </component>
 </project>
