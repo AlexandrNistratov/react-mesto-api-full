@@ -15,7 +15,7 @@ const { createProfile, login } = require('./controllers/users');
 const options = {
   origin: [
     'http://localhost:3000',
-    'https://api.domainname.students.nomoredomains.club',
+    'https://mesto.koss.nomoredomains.club',
     'https://AlexandrNistratov.github.io',
   ],
   credentials: true // эта опция позволяет устанавливать куки
