@@ -134,7 +134,7 @@ const login = (req, res, next) => {
         'some-secret-key',
         { expiresIn: '7d' }
     )
-      res.send({ token })
+      res.send({ token, email: user.email })
     })
     .catch(err => {
       if (err.name === 'ValidationError') {

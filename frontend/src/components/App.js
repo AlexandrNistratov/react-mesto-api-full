@@ -182,9 +182,9 @@ function App() {
             .then((data) => {
                 console.log(data)
                 if (data.token) {
+                    setEmail(email)
                     localStorage.setItem('jwt', data.token);
-                    setLoggedIn(true)
-                    setEmail(userData.email)
+                    setLoggedIn(true);
                     history.push('/');
                 }
             }).catch(err => console.log(err))
