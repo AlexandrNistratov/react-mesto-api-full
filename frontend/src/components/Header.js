@@ -9,7 +9,7 @@ function Header({onClick, email}) {
             <Switch>
                 <Route exact path='/'>
                     <nav className="header__nav">
-                        <p className='header__nav-email'>{email.email}</p>
+                        <p className='header__nav-email'>{email}</p>
                         <Link className='header__nav-link' onClick={onClick} to="/sign-up">Выйти</Link>
                     </nav>
                 </Route>

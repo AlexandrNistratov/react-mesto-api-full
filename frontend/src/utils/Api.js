@@ -3,13 +3,21 @@ import { base_url } from './utils'
 class Api {
   constructor(config) {
     this._url = config.url;
-    this._headers = config.headers;
+    // this._headers = config.headers;
+  }
+
+  getToken () {
+    const token = localStorage.getItem('jwt');
+    return {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
   }
 
   getUserInfo () {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include'
     }).then((res) => {
       if (res.ok) {
@@ -23,7 +31,7 @@ class Api {
   addUserInfo (data) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include',
       body: JSON.stringify({
         name: data.name,
@@ -41,7 +49,7 @@ class Api {
   getAllCards() {
     return fetch(`${this._url}/cards`,{
       method: 'GET',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include',
     }).then((res) => {
       if (res.ok) {
@@ -55,7 +63,7 @@ class Api {
   addNewCards(data) {
     return fetch(`${this._url}/cards`,{
       method: 'POST',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include',
       body: JSON.stringify({
         name: data.name,
@@ -74,7 +82,7 @@ class Api {
   deleteCards(id) {
     return fetch(`${this._url}/cards/${id}`,{
       method: 'DELETE',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include'
       }).then((res) => {
         if (res.ok) {
@@ -88,7 +96,7 @@ class Api {
   likeCard(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'PUT',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include'
     }).then((res) => {
       if(res.ok) {
@@ -102,7 +110,7 @@ class Api {
   dislikeCard(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include'
     }).then((res) => {
       if(res.ok) {
@@ -116,7 +124,7 @@ class Api {
   addUserAvatar (data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this.getToken(),
       credentials: 'include',
       body: JSON.stringify({
         avatar: data.avatar
@@ -133,9 +141,10 @@ class Api {
 
 export  const api = new Api({
   url: base_url,
-  headers: {
-    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-    'content-type': 'application/json'
-  }
+  // headers: this._getToken()
+  // {
+  //   'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+  //   'content-type': 'application/json'
+  // }
 });
 console.log( base_url)

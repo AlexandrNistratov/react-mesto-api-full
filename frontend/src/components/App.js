@@ -58,7 +58,6 @@ function App() {
         if (!loggedIn) return;
         api.getAllCards()
             .then(data => {
-                // console.log(data)
                 setCards(data)
             }).catch((err) => alert(err));
     }, [loggedIn]);
@@ -115,7 +114,6 @@ function App() {
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
         const isLiked = card.likes.some(i => i === currentUser._id);
-        console.log(card.likes)
         isLiked ? (
             //Отправляем запрос для удаления лайка
             api.dislikeCard(card._id).then((res) => {
@@ -169,7 +167,7 @@ function App() {
                     }
                     setUserData(userData);
                     setLoggedIn(true);
-                    setEmail(userData)
+                    setEmail(res.email)
                     history.push('/');
                 }).catch(err => {
                 console.log(err)
@@ -180,7 +178,6 @@ function App() {
     function handleLogin(email, password) {
         Auth.authorize(email, password)
             .then((data) => {
-                console.log(data)
                 if (data.token) {
                     setEmail(email)
                     localStorage.setItem('jwt', data.token);
