@@ -62,8 +62,8 @@ const createProfile = (req, res, next) => {
     .then(hash => {
       return User.create({ email, password: hash })
     })
-    .then(() => {
-      res.status(200).send({ message: 'Пользователь создан!' });
+    .then((user) => {
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.kind === 'ObjectId') {

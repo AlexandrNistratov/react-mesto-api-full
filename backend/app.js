@@ -14,7 +14,7 @@ const { createProfile, login } = require('./controllers/users');
 
 const options = {
   origin: [
-    'http://localhost:3000',
+    'http://localhost:3001',
     'https://mesto.koss.nomoredomains.club',
     'https://AlexandrNistratov.github.io',
   ],
@@ -22,6 +22,7 @@ const options = {
 };
 
 const app = express();
+
 app.use('*', cors(options));
 
 const { PORT = 3000 } = process.env;

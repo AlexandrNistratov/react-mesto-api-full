@@ -39,7 +39,7 @@ class Api {
   }
 
   getAllCards() {
-    return fetch(this._url,{
+    return fetch(`${this._url}/cards`,{
       method: 'GET',
       headers: this._headers,
       credentials: 'include',
@@ -53,7 +53,7 @@ class Api {
   }
 
   addNewCards(data) {
-    return fetch(this._url,{
+    return fetch(`${this._url}/cards`,{
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
@@ -62,6 +62,7 @@ class Api {
         link: data.link
       })
     }).then((res) => {
+      // console.log(data)
       if (res.ok) {
         return res.json();
       }else {
@@ -85,7 +86,7 @@ class Api {
   }
 
   likeCard(likeId) {
-    return fetch(`${this._url}/cards/likes/${likeId}`, {
+    return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'PUT',
       headers: this._headers,
       credentials: 'include'
@@ -99,7 +100,7 @@ class Api {
   }
 
   dislikeCard(likeId) {
-    return fetch(`${this._url}/cards/likes/${likeId}`, {
+    return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include'

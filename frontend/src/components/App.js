@@ -99,6 +99,7 @@ function App() {
     React.useEffect(() => {
         api.getAllCards()
             .then(data => {
+                console.log(data)
                 setCards(data)
             }).catch((err) => alert(err));
     }, []);
@@ -106,12 +107,12 @@ function App() {
     // Лайк
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
         console.log(card.likes)
-
         isLiked ? (
             //Отправляем запрос для удаления лайка
             api.dislikeCard(card._id).then((res) => {
+
                 const dislikeCard = cards.map((item) => item._id === card._id ? res : item);
                 setCards(dislikeCard)
             }).catch((err) => alert(err))
@@ -129,7 +130,7 @@ function App() {
     // Удаление карточки
     function handleCardDelete(card) {
         // Определяем, являемся ли мы владельцем текущей карточки
-        const isOwn = card.owner._id === currentUser._id;
+        const isOwn = card.owner === currentUser._id;
 
         if (isOwn) {
             api.deleteCards(card._id).then(() => {
@@ -141,7 +142,9 @@ function App() {
 
     //Создаем новую карточку
     function handleAddPlaceSubmit(data) {
+        console.log(data)
         api.addNewCards(data).then((newCard) => {
+            // console.log(newCard)
             setCards([newCard, ...cards]);
             closeAllPopups();
         }).catch((err) => alert(err));
@@ -154,8 +157,8 @@ function App() {
             Auth.getContent(jwt)
                 .then((res) => {
                     const userData = {
-                        email: res.data.email,
-                        password: res.data.password
+                        email: res.email,
+                        password: res.password
                     }
                     setUserData(userData);
                     setLoggedIn(true);
@@ -180,10 +183,9 @@ function App() {
     function handleRegister(email, password) {
         Auth.register(email, password)
             .then((res) => {
-                // console.log(res)
-                if (res !== undefined && res.data._id) {
+                if (res !== undefined && res._id) {
                     setUserData({
-                        email: res.data.email
+                        email: res.email
                     })
                     handleInfoTooltipOpen();
                     setTimeout(() => {
