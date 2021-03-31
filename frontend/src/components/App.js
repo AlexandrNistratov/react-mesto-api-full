@@ -37,17 +37,32 @@ function App() {
         password: ''
     });
 
+    const [ email , setEmail] = React.useState('');
+
 
     React.useEffect(() => {
         tokenCheck();
     }, []);
 
     React.useEffect(() => {
+        if (!loggedIn) return;
         api.getUserInfo()
             .then(res => {
                 setCurrentUser(res)
             }).catch((err) => alert(err));
-    }, [])
+    }, [loggedIn])
+
+    //Отрисовка карточек с сервера
+    const [cards, setCards] = React.useState([]);
+    React.useEffect(() => {
+        if (!loggedIn) return;
+        api.getAllCards()
+            .then(data => {
+                // console.log(data)
+                setCards(data)
+            }).catch((err) => alert(err));
+    }, [loggedIn]);
+
 
     function handleInfoTooltipOpen(status) {
         setInfoTooltipOpen(true);
@@ -94,15 +109,6 @@ function App() {
         }).catch((err) => alert(err));
     }
 
-    //Отрисовка карточек с сервера
-    const [cards, setCards] = React.useState([]);
-    React.useEffect(() => {
-        api.getAllCards()
-            .then(data => {
-                console.log(data)
-                setCards(data)
-            }).catch((err) => alert(err));
-    }, []);
 
     // Лайк
     function handleCardLike(card) {
@@ -162,6 +168,7 @@ function App() {
                     }
                     setUserData(userData);
                     setLoggedIn(true);
+                    setEmail(userData)
                     history.push('/');
                 }).catch(err => {
                 console.log(err)
@@ -172,9 +179,12 @@ function App() {
     function handleLogin(email, password) {
         Auth.authorize(email, password)
             .then((data) => {
+                console.log(data)
                 if (data.token) {
+
                     localStorage.setItem('jwt', data.token);
                     setLoggedIn(true)
+                    // setEmail(email)
                     history.push('/');
                 }
             }).catch(err => console.log(err))
@@ -210,7 +220,7 @@ function App() {
                 <Header
                     loggedIn={loggedIn}
                     onClick={handleLogout}
-                    email={userData}
+                    email={email}
                 />
                 <Switch>
                     <ProtectedRoute
