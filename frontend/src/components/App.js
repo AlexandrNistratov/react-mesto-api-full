@@ -64,6 +64,7 @@ function App() {
     }, [loggedIn]);
 
 
+
     function handleInfoTooltipOpen(status) {
         setInfoTooltipOpen(true);
         setTooltipStatus(status);
@@ -181,10 +182,9 @@ function App() {
             .then((data) => {
                 console.log(data)
                 if (data.token) {
-
                     localStorage.setItem('jwt', data.token);
                     setLoggedIn(true)
-                    setEmail(data.email)
+                    setEmail(userData.email)
                     history.push('/');
                 }
             }).catch(err => console.log(err))
