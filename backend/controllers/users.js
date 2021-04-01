@@ -63,7 +63,10 @@ const createProfile = (req, res, next) => {
       return User.create({ email, password: hash })
     })
     .then((user) => {
-      res.status(200).send(user);
+      res.status(200).send({
+        email: user.email,
+        _id: user._id
+      });
     })
     .catch((err) => {
       if (err.kind === 'ObjectId') {
