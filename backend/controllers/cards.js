@@ -15,6 +15,7 @@ const getCards = (req, res, next) => {
 const createCard = (req, res, next) => {
   Card.create({ ...req.body, owner: req.user._id })
     .then((card) => {
+      console.log(card)
       res.status(200).send(card)})
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -30,7 +31,6 @@ const deleteCard = (req, res, next) => {
 
   Card.findById(req.params.cardId)
     .then(cards => {
-      console.log(cards)
       if(!cards) {
         throw new NotFoundError('Карточка не найдена');
       }
