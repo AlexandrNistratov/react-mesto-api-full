@@ -30,6 +30,7 @@ const deleteCard = (req, res, next) => {
 
   Card.findById(req.params.cardId)
     .then(cards => {
+      console.log(cards)
       if(!cards) {
         throw new NotFoundError('Карточка не найдена');
       }
