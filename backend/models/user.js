@@ -38,25 +38,25 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false
-  }
+    select: false,
+  },
 });
 
-//Проверка почты и пароля
+// Проверка почты и пароля
 UserSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
-    .then(user => {
+    .then((user) => {
       if (!user) {
         throw new AuthorizationError('Неправильные почта или пароль');
       }
       return bcrypt.compare(password, user.password)
-        .then(matched => {
+        .then((matched) => {
           if (!matched) {
             throw new AuthorizationError('Неправильные почта или пароль');
           }
           return user;
-        })
-    })
-}
+        });
+    });
+};
 
 module.exports = mongoose.model('User', UserSchema);

@@ -1,6 +1,6 @@
-const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
@@ -20,35 +20,35 @@ const getUsers = (req, res, next) => {
 const getProfile = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
-      if(!user) {
+      if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
       }
       return res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.kind === 'ObjectId'){
+      if (err.kind === 'ObjectId') {
         next(new BadRequestError('Некорректные данные'));
       }
-      next(err)
-    })
+      next(err);
+    });
 };
 
-//Я
+// Я
 const getMeProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
-      if(!user) {
+      if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
       }
       return res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.kind === 'ObjectId'){
+      if (err.kind === 'ObjectId') {
         next(new BadRequestError('Некорректные данные'));
       }
-      next(err)
-    })
-}
+      next(err);
+    });
+};
 
 // Создание пользователя
 const createProfile = (req, res, next) => {
@@ -59,13 +59,11 @@ const createProfile = (req, res, next) => {
   }
   bcrypt
     .hash(password, SALT_ROUNDS)
-    .then(hash => {
-      return User.create({ email, password: hash })
-    })
+    .then((hash) => User.create({ email, password: hash }))
     .then((user) => {
       res.status(200).send({
         email: user.email,
-        _id: user._id
+        _id: user._id,
       });
     })
     .catch((err) => {
@@ -78,10 +76,9 @@ const createProfile = (req, res, next) => {
       if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
         next(new ConflictError('Такой пользователь уже существует'));
       }
-      next(err)
-    })
+      next(err);
+    });
 };
-
 
 // Изменение профиля
 const setProfile = (req, res, next) => {
@@ -101,7 +98,7 @@ const setProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректные данные'));
       }
-      next(err)
+      next(err);
     });
 };
 
@@ -123,7 +120,7 @@ const setAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректные данные'));
       }
-      next(err)
+      next(err);
     });
 };
 
@@ -131,22 +128,22 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
-    .then(user => {
+    .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
         'some-secret-key',
-        { expiresIn: '7d' }
-    )
-      res.send({ token, email: user.email })
+        { expiresIn: '7d' },
+      );
+      res.send({ token, email: user.email });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректные данные'));
       }
-      next(err)
-    })
-}
+      next(err);
+    });
+};
 
 module.exports = {
-  getUsers, getProfile, createProfile, setProfile, setAvatar, login, getMeProfile
+  getUsers, getProfile, createProfile, setProfile, setAvatar, login, getMeProfile,
 };
