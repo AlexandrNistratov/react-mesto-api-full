@@ -13,11 +13,8 @@ const getCards = (req, res, next) => {
 
 // Создать карточку
 const createCard = (req, res, next) => {
-  const owner = req.user._id;
-  const { name, link } = req.body;
-  Card.create({ name, link, owner })
+  Card.create({ ...req.body, owner: req.user._id })
     .then((card) => {
-      console.log(card)
       res.status(200).send(card)})
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -33,10 +30,12 @@ const deleteCard = (req, res, next) => {
 
   Card.findById(req.params.cardId)
     .then(cards => {
+      console.log(owner)
+      console.log(cards.owner)
       if(!cards) {
         throw new NotFoundError('Карточка не найдена');
       }
-      if (req.user._id !== owner) {
+      if (cards.owner !== owner) {
         throw new ForbiddenError('Не ваша карточка')
       }
       Card.findByIdAndRemove(req.params.cardId)
