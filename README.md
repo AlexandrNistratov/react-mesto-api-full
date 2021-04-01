@@ -22,4 +22,5 @@
 * Пытаться снять чужие лайки, не рекомендуется).
 * Пароли зашифрованы 
 ### Публичный IP адрес : 130.193.41.252
-### [Ссылка на проект](https://mesto.koss.nomoredomains.club/)
+### [Frontend](https://mesto.koss.nomoredomains.club/)
+### [Backend](https://api.domainname.students.nomoredomains.club)
