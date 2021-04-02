@@ -42,7 +42,7 @@ function App() {
 
     React.useEffect(() => {
         tokenCheck();
-    }, []);
+    }, [])// eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (!loggedIn) return;
